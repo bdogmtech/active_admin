@@ -37,7 +37,6 @@ module ActiveAdmin
         rescue_from ActiveAdmin::AccessDenied, :with => :dispatch_active_admin_access_denied
 
         helper_method :authorized?
-        helper_method :authorize!
       end
 
       protected
@@ -55,27 +54,6 @@ module ActiveAdmin
       #
       def authorized?(action, subject = nil)
         active_admin_authorization.authorized?(action, subject)
-      end
-
-
-      # Authorize the action and subject. Available in the controller
-      # as well as all the views. If the action is not allowd, it raises
-      # an ActiveAdmin::AccessDenied exception.
-      #
-      # @param [Symbol] action The action to check if the user has permission
-      #                 to perform on the subject.
-      #
-      # @param [any] subject The subject that the user is trying to perform
-      #                 the action on.
-      #
-      # @returns [Boolean] True if authorized, otherwise raises
-      #                 an ActiveAdmin::AccessDenied.
-      def authorize!(action, subject = nil)
-        unless authorized? action, subject
-          raise ActiveAdmin::AccessDenied.new(current_active_admin_user,
-                                              action,
-                                              subject)
-        end
       end
 
       # Performs authorization on the resource using the current controller
